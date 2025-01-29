@@ -6,8 +6,8 @@ import(
 
 type TaskRepository interface{
 	Create(task entities.Task) (entities.Task, error)
-	GetByID(id uint64) (entities.Task, error)
+	GetByID(uuid string) (entities.Task, error)
 	Update(task entities.Task) (entities.Task, error)
 	GetAll() ([]entities.Task, error)
-	Delete(id uint64) error
+	Delete(uuid string) error
 }

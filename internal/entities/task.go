@@ -1,7 +1,7 @@
 package entities
 
 type Task struct {
-	ID          uint64
+	UUID        string
 	Title       string
 	Description string
 	Completed   bool

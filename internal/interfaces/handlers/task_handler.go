@@ -1,10 +1,12 @@
 package handlers
 
-import(
+import (
+	"encoding/json"
+	"net/http"
 	"todo-app/internal/entities"
 	"todo-app/internal/usecases"
-	"net/http"
-	"encoding/json"
+
+	"github.com/gorilla/mux"
 )
 
 type TaskHandler struct {
@@ -15,7 +17,7 @@ func newTaskHandler(taskUseCase *usecases.TaskUseCase) *TaskHandler {
 	return &TaskHandler{taskUseCase: taskUseCase}
 }
 
-func (h *TaskHandler) CreateTask(w http.ResponseWriter, r http.Request) {
+func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 	var task entities.Task
 	if err := json.NewDecoder(r.Body).Decode(&task); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -32,4 +34,16 @@ func (h *TaskHandler) CreateTask(w http.ResponseWriter, r http.Request) {
 	json.NewEncoder(w).Encode(createdTask)
 }
 
+func (h *TaskHandler) GetBuUUID(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	uuid := vars["id"]
 
+	task, err := h.taskUseCase.GetByUUID(uuid)
+	if err != nil{
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(task)
+}

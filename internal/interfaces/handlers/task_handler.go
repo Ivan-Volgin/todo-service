@@ -47,3 +47,20 @@ func (h *TaskHandler) GetBuUUID(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(task)
 }
+
+func (h *TaskHandler) Update(w http.ResponseWriter, r *http.Request) {
+	var task entities.Task
+	if err := json.NewDecoder(r.Body).Decode(task); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	updatedTask, err := h.taskUseCase.UpdateTask(task)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(updatedTask)
+}

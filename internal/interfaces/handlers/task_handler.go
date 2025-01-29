@@ -64,3 +64,14 @@ func (h *TaskHandler) Update(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(updatedTask)
 }
+
+func (h *TaskHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+	tasks, err := h.taskUseCase.GetAll()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(tasks)
+}

@@ -1,0 +1,35 @@
+package handlers
+
+import(
+	"todo-app/internal/entities"
+	"todo-app/internal/usecases"
+	"net/http"
+	"encoding/json"
+)
+
+type TaskHandler struct {
+	taskUseCase *usecases.TaskUseCase
+}
+
+func newTaskHandler(taskUseCase *usecases.TaskUseCase) *TaskHandler {
+	return &TaskHandler{taskUseCase: taskUseCase}
+}
+
+func (h *TaskHandler) CreateTask(w http.ResponseWriter, r http.Request) {
+	var task entities.Task
+	if err := json.NewDecoder(r.Body).Decode(&task); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	createdTask, err := h.taskUseCase.CreateTask(task)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(createdTask)
+}
+
+

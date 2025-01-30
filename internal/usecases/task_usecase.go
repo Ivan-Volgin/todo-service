@@ -18,7 +18,7 @@ func (uc *TaskUseCase) CreateTask(task entities.Task) (entities.Task, error){
 }
 
 func (uc *TaskUseCase) GetByUUID(uuid string) (entities.Task, error){
-	return uc.repo.GetByID(uuid)
+	return uc.repo.GetByUUID(uuid)
 }
 
 func (uc *TaskUseCase) UpdateTask(task entities.Task) (entities.Task, error){

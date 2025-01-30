@@ -13,7 +13,7 @@ type TaskHandler struct {
 	taskUseCase *usecases.TaskUseCase
 }
 
-func newTaskHandler(taskUseCase *usecases.TaskUseCase) *TaskHandler {
+func NewTaskHandler(taskUseCase *usecases.TaskUseCase) *TaskHandler {
 	return &TaskHandler{taskUseCase: taskUseCase}
 }
 
@@ -34,7 +34,7 @@ func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(createdTask)
 }
 
-func (h *TaskHandler) GetBuUUID(w http.ResponseWriter, r *http.Request) {
+func (h *TaskHandler) GetByUUID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	uuid := vars["uuid"]
 

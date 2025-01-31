@@ -1,7 +1,7 @@
 package repositories
 
 import(
-	"todo-app/internal/entities"
+	"todo-service/internal/entities"
 )
 
 type TaskRepository interface{

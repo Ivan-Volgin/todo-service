@@ -2,9 +2,9 @@ package http
 
 import(
 	"github.com/gorilla/mux"
-	"todo-app/internal/interfaces/handlers"
-	"todo-app/internal/interfaces/repositories"
-	"todo-app/internal/usecases"
+	"todo-service/internal/interfaces/handlers"
+	"todo-service/internal/interfaces/repositories"
+	"todo-service/internal/usecases"
 )
 
 func NewServer(taskRepo repositories.TaskRepository) *mux.Router {

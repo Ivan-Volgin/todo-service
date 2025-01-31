@@ -1,8 +1,8 @@
 package usecases
 
 import(
-	"todo-app/internal/entities"
-	"todo-app/internal/interfaces/repositories"
+	"todo-service/internal/entities"
+	"todo-service/internal/interfaces/repositories"
 )
 
 type TaskUseCase struct {
@@ -18,7 +18,14 @@ func (uc *TaskUseCase) CreateTask(task entities.Task) (entities.Task, error){
 }
 
 func (uc *TaskUseCase) GetByUUID(uuid string) (entities.Task, error){
-	return uc.repo.GetByUUID(uuid)
+	task, err := uc.repo.GetByUUID(uuid)
+    if err != nil {
+        if err == repositories.ErrTaskNotFound {
+            return entities.Task{}, err
+        }
+        return entities.Task{}, err
+    }
+    return task, nil
 }
 
 func (uc *TaskUseCase) UpdateTask(task entities.Task) (entities.Task, error){

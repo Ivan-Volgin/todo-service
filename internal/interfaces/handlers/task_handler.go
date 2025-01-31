@@ -3,8 +3,9 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"todo-app/internal/entities"
-	"todo-app/internal/usecases"
+	"todo-service/internal/entities"
+	"todo-service/internal/usecases"
+	"todo-service/internal/interfaces/repositories"
 
 	"github.com/gorilla/mux"
 )
@@ -40,6 +41,10 @@ func (h *TaskHandler) GetByUUID(w http.ResponseWriter, r *http.Request) {
 
 	task, err := h.taskUseCase.GetByUUID(uuid)
 	if err != nil{
+		if err == repositories.ErrTaskNotFound {
+            http.Error(w, "Task not found", http.StatusNotFound)
+            return
+        }
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

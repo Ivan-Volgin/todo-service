@@ -11,7 +11,7 @@ import (
 )
 
 func main(){
-	db, err := database.Conect("", "", "", "", "")
+	db, err := database.Conect("localhost", "5432", "postgres", "123", "todo_db")
 	if err != nil {
 		log.Fatalf("Could not connect to database %v", err)
 	}

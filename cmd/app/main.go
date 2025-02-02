@@ -3,8 +3,9 @@ package main
 import (
 	"log"
 	"net/http"
-	"todo-service/internal/interfaces/handlers"
-	"todo-service/internal/interfaces/repositories"
+	// "context"
+	"todo-service/internal/handlers"
+	"todo-service/internal/repositories"
 	"todo-service/internal/usecases"
 	"todo-service/pkg/database"
 	"todo-service/pkg/http_server"

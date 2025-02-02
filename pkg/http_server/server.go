@@ -2,7 +2,7 @@ package http_server
 
 import(
 	"github.com/gorilla/mux"
-	"todo-service/internal/interfaces/handlers"
+	"todo-service/internal/handlers"
 )
 
 func NewServer(taskHandler handlers.TaskHandler) *mux.Router {

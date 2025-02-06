@@ -16,7 +16,7 @@ func NewPostgresTaskRepository(db *sql.DB) *PostgresTaskRepository{
 }
 
 func (r *PostgresTaskRepository) Create(ctx context.Context, task entities.Task) (entities.Task, error) {
-	task.UUID = uuid.New().String()
+	task.UUID = uuid.New()
 
 	query := `INSERT INTO tasks (uuid, title, description, completed) VALUES ($1, $2, $3, $4)`
 	_, err := r.db.ExecContext(ctx, query, task.UUID, task.Title, task.Description, task.Completed)
@@ -88,3 +88,13 @@ func (r *PostgresTaskRepository) Delete(ctx context.Context, uuid string) error 
 	}
 	return nil
 }
+
+// func (r *PostgresTaskRepository) GetByName(ctx context.Context, owner_id, task_title string) (entities.Task, error) {
+// 	var task entities.Task
+
+
+// }
+
+// func (r *PostgresTaskRepository) GetByDate(ctx context.Context, owner_id, date string) (entities.Task, error) {
+
+// }

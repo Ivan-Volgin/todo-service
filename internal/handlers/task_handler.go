@@ -6,6 +6,7 @@ import (
 	"todo-service/internal/entities"
 	"todo-service/internal/usecases"
 	"todo-service/internal/repositories"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -71,7 +72,30 @@ func (h *TaskHandler) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *TaskHandler) GetAll(w http.ResponseWriter, r *http.Request) {
-	tasks, err := h.taskUseCase.GetAll(r.Context())
+	limitStr := r.URL.Query().Get("limit")
+	offsetStr := r.URL.Query().Get("offset")
+
+	limit, offset := 10, 0
+
+    if limitStr != "" {
+        l, err := strconv.Atoi(limitStr)
+        if err != nil {
+            http.Error(w, "Invalid limit parameter", http.StatusBadRequest)
+            return
+        }
+        limit = l
+    }
+
+    if offsetStr != "" {
+        o, err := strconv.Atoi(offsetStr)
+        if err != nil {
+            http.Error(w, "Invalid offset parameter", http.StatusBadRequest)
+            return
+        }
+        offset = o
+    }
+
+	tasks, err := h.taskUseCase.GetAll(r.Context(), limit, offset)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

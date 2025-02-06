@@ -54,11 +54,11 @@ func (r *PostgresTaskRepository) Update(ctx context.Context, task entities.Task)
 	return task, nil
 }
 
-func (r *PostgresTaskRepository) GetAll(ctx context.Context) ([]entities.Task, error) {
+func (r *PostgresTaskRepository) GetAll(ctx context.Context, limit, offset int) ([]entities.Task, error) {
 	var tasks []entities.Task
 
-	query := "SELECT uuid, title, description, completed FROM tasks"
-	rows, err := r.db.QueryContext(ctx, query)
+	query := "SELECT uuid, title, description, completed FROM tasks LIMIT $1 OFFSET $2"
+	rows, err := r.db.QueryContext(ctx, query, limit, offset)
 	if err != nil {
 		return nil, err
 	}

@@ -35,8 +35,8 @@ func (uc *TaskUseCase) UpdateTask(ctx context.Context, task entities.Task) (enti
 	return uc.repo.Update(ctx, task)
 }
 
-func (uc *TaskUseCase) GetAll(ctx context.Context) ([]entities.Task, error) {
-	return uc.repo.GetAll(ctx)
+func (uc *TaskUseCase) GetAll(ctx context.Context, limit, offset int) ([]entities.Task, error) {
+	return uc.repo.GetAll(ctx, limit, offset)
 }
 
 func (uc *TaskUseCase) DeleteTask(ctx context.Context, uuid string) error {

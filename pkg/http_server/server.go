@@ -10,7 +10,7 @@ func NewServer(taskHandler handlers.TaskHandler) *mux.Router {
 
 	r.HandleFunc("/tasks", taskHandler.CreateTask).Methods("POST")
 	r.HandleFunc("/tasks/{uuid}", taskHandler.GetByUUID).Methods("GET")
-	r.HandleFunc("/tasks/{uuid}", taskHandler.Update).Methods("PUT")
+	r.HandleFunc("/tasks/{uuid}", taskHandler.Update).Methods("PATCH")
 	r.HandleFunc("/tasks/{uuid}", taskHandler.Delete).Methods("DELETE")
 	r.HandleFunc("/tasks", taskHandler.GetAll).Methods("GET")
 

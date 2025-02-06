@@ -1,25 +1,25 @@
 package repositories
 
-import(
-	"todo-service/internal/entities"
+import (
+	"context"
 	"database/sql"
 	"github.com/google/uuid"
-	"context"
+	"todo-service/internal/entities"
 )
 
 type PostgresTaskRepository struct {
 	db *sql.DB
 }
 
-func NewPostgresTaskRepository(db *sql.DB) *PostgresTaskRepository{
+func NewPostgresTaskRepository(db *sql.DB) *PostgresTaskRepository {
 	return &PostgresTaskRepository{db: db}
 }
 
 func (r *PostgresTaskRepository) Create(ctx context.Context, task entities.Task) (entities.Task, error) {
 	task.UUID = uuid.New()
 
-	query := `INSERT INTO tasks (uuid, title, description, completed) VALUES ($1, $2, $3, $4)`
-	_, err := r.db.ExecContext(ctx, query, task.UUID, task.Title, task.Description, task.Completed)
+	query := `INSERT INTO tasks (uuid, title, description, completed, user_id, date) VALUES ($1, $2, $3, $4, $5, $6)`
+	_, err := r.db.ExecContext(ctx, query, task.UUID, task.Title, task.Description, task.Completed, task.Date, task.User_ID)
 	if err != nil {
 		return entities.Task{}, err
 	}
@@ -30,10 +30,10 @@ func (r *PostgresTaskRepository) Create(ctx context.Context, task entities.Task)
 func (r *PostgresTaskRepository) GetByUUID(ctx context.Context, uuid string) (entities.Task, error) {
 	var task entities.Task
 
-	query := `SELECT uuid, title, description, completed FROM tasks WHERE uuid = $1`
+	query := `SELECT uuid, title, description, completed, date, user_id FROM tasks WHERE uuid = $1`
 	row := r.db.QueryRowContext(ctx, query, uuid)
 
-	err := row.Scan(&task.UUID, &task.Title, &task.Description, &task.Completed)
+	err := row.Scan(&task.UUID, &task.Title, &task.Description, &task.Completed, &task.Date, &task.User_ID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return entities.Task{}, ErrTaskNotFound
@@ -74,10 +74,10 @@ func (r *PostgresTaskRepository) GetAll(ctx context.Context, limit, offset int) 
 	}
 
 	if err = rows.Err(); err != nil {
-        return nil, err
-    }
+		return nil, err
+	}
 
-    return tasks, nil
+	return tasks, nil
 }
 
 func (r *PostgresTaskRepository) Delete(ctx context.Context, uuid string) error {
@@ -91,7 +91,6 @@ func (r *PostgresTaskRepository) Delete(ctx context.Context, uuid string) error 
 
 // func (r *PostgresTaskRepository) GetByName(ctx context.Context, owner_id, task_title string) (entities.Task, error) {
 // 	var task entities.Task
-
 
 // }
 

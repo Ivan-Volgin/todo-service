@@ -19,6 +19,15 @@ func NewTaskHandler(taskUseCase *usecases.TaskUseCase) *TaskHandler {
 	return &TaskHandler{taskUseCase: taskUseCase}
 }
 
+// @Summary Create a task
+// @Description Create a task
+// @Tags tasks
+// @Accept json
+// @Produce json
+// @Success 201 {object} entities.Task
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/v1/tasks/create [post]
 func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 	var task entities.Task
 	if err := json.NewDecoder(r.Body).Decode(&task); err != nil {
@@ -36,6 +45,15 @@ func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(createdTask)
 }
 
+// @Summary Get task by uuid
+// @Description Get task by uuid
+// @Tags tasks
+// @Accept json
+// @Produce json
+// @Success 200 {object} entities.Task
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/v1/tasks/{uuid} [get]
 func (h *TaskHandler) GetByUUID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	uuid := vars["uuid"] // проверить что значение есть
@@ -54,6 +72,15 @@ func (h *TaskHandler) GetByUUID(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(task)
 }
 
+// @Summary Get task by uuid
+// @Description Get task by uuid
+// @Tags tasks
+// @Accept json
+// @Produce json
+// @Success 200 {object} entities.Task
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/v1/tasks/{uuid}/update [patch]
 func (h *TaskHandler) Update(w http.ResponseWriter, r *http.Request) {
 	var task entities.Task
 	if err := json.NewDecoder(r.Body).Decode(&task); err != nil {
@@ -71,6 +98,16 @@ func (h *TaskHandler) Update(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(updatedTask)
 }
 
+// @Summary Get all tasks
+// @Description Get all user's tasks
+// @Tags tasks
+// @Accept json
+// @Produce json
+// @Success 200 {array}  entities.Task
+// @Failure 400 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/v1/users/{user_uuid}/tasks [get]
 func (h *TaskHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	limitStr := r.URL.Query().Get("limit")
 	offsetStr := r.URL.Query().Get("offset")
@@ -105,6 +142,15 @@ func (h *TaskHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(tasks)
 }
 
+// @Summary Delete task by uuid
+// @Description Delete task by its uuid
+// @Tags tasks
+// @Accept json
+// @Produce json
+// @Success 200 {object} entities.Task
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/v1/tasks/{uuid}/delete [delete]
 func (h *TaskHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	uuid := vars["uuid"]

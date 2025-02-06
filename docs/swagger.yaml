@@ -1,0 +1,170 @@
+basePath: /
+definitions:
+  entities.Task:
+    properties:
+      completed:
+        type: boolean
+      date:
+        type: string
+      description:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
+      uuid:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: volgin.i.a@yandex.ru
+    name: Volgin Ivan
+  description: This is an application for creating and managing tasks
+  title: todo-service
+  version: "1.0"
+paths:
+  /api/v1/tasks/{uuid}:
+    get:
+      consumes:
+      - application/json
+      description: Get task by uuid
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Task'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get task by uuid
+      tags:
+      - tasks
+  /api/v1/tasks/{uuid}/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete task by its uuid
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Task'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete task by uuid
+      tags:
+      - tasks
+  /api/v1/tasks/{uuid}/update:
+    patch:
+      consumes:
+      - application/json
+      description: Get task by uuid
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Task'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get task by uuid
+      tags:
+      - tasks
+  /api/v1/tasks/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a task
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entities.Task'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a task
+      tags:
+      - tasks
+  /api/v1/users/{user_uuid}/tasks:
+    get:
+      consumes:
+      - application/json
+      description: Get all user's tasks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.Task'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all tasks
+      tags:
+      - tasks
+swagger: "2.0"

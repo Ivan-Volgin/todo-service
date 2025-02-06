@@ -11,8 +11,19 @@ import (
 	"todo-service/pkg/database"
 	"todo-service/pkg/http_server"
 	"github.com/joho/godotenv"
+	"github.com/swaggo/http-swagger"
 )
 
+// @title           todo-service
+// @version         1.0
+// @description     This is an application for creating and managing tasks
+
+// @contact.name   Volgin Ivan
+// @contact.email  volgin.i.a@yandex.ru
+
+
+// @host      localhost:8080
+// @BasePath  /
 func main(){
 	if err := godotenv.Load(); err != nil {
         log.Fatal("Error loading .env file")
@@ -40,6 +51,7 @@ func main(){
 	taskHandler := handlers.NewTaskHandler(taskUseCase)
 
 	r := http_server.NewServer(*taskHandler)
+	r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	log.Println("Server is running on port 8080...")
     log.Fatal(http.ListenAndServe(serverAddr, r))

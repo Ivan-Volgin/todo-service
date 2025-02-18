@@ -3,6 +3,7 @@ package usecases
 import (
 	"errors"
 	"fmt"
+	"log"
 	"context"
 	"todo-service/internal/entities"
 	"todo-service/internal/repositories"
@@ -13,6 +14,7 @@ type TaskUseCase struct {
 }
 
 func NewTaskUseCase(repo repositories.TaskRepository) *TaskUseCase {
+	log.Println("TaskUseCase initialized")
 	return &TaskUseCase{repo: repo}
 }
 

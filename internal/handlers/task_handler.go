@@ -7,6 +7,7 @@ import (
 	"todo-service/internal/usecases"
 	"todo-service/internal/repositories"
 	"strconv"
+	"log"
 
 	"github.com/gorilla/mux"
 )
@@ -16,6 +17,7 @@ type TaskHandler struct {
 }
 
 func NewTaskHandler(taskUseCase *usecases.TaskUseCase) *TaskHandler {
+	log.Println("TaskHandler initialized")
 	return &TaskHandler{taskUseCase: taskUseCase}
 }
 
@@ -29,8 +31,10 @@ func NewTaskHandler(taskUseCase *usecases.TaskUseCase) *TaskHandler {
 // @Failure 500 {object} map[string]string
 // @Router /api/v1/tasks/create [post]
 func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
+	log.Println("Handling CreateTask request")
 	var task entities.Task
 	if err := json.NewDecoder(r.Body).Decode(&task); err != nil {
+		log.Printf("Error decoding task data: %v", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -55,6 +59,7 @@ func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} map[string]string
 // @Router /api/v1/tasks/{uuid} [get]
 func (h *TaskHandler) GetByUUID(w http.ResponseWriter, r *http.Request) {
+	log.Println("Handling GetByUUID request")
 	vars := mux.Vars(r)
 	uuid := vars["uuid"] // проверить что значение есть
 
@@ -82,8 +87,10 @@ func (h *TaskHandler) GetByUUID(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} map[string]string
 // @Router /api/v1/tasks/{uuid}/update [patch]
 func (h *TaskHandler) Update(w http.ResponseWriter, r *http.Request) {
+	log.Println("Handling Update request")
 	var task entities.Task
 	if err := json.NewDecoder(r.Body).Decode(&task); err != nil {
+		log.Printf("Error decoding task data: %v", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -109,6 +116,7 @@ func (h *TaskHandler) Update(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} map[string]string
 // @Router /api/v1/users/{user_uuid}/tasks [get]
 func (h *TaskHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+	log.Println("Handling GetAll request")
 	limitStr := r.URL.Query().Get("limit")
 	offsetStr := r.URL.Query().Get("offset")
 
@@ -117,6 +125,7 @@ func (h *TaskHandler) GetAll(w http.ResponseWriter, r *http.Request) {
     if limitStr != "" {
         l, err := strconv.Atoi(limitStr)
         if err != nil {
+			log.Println("Invalid limit parameter")
             http.Error(w, "Invalid limit parameter", http.StatusBadRequest)
             return
         }
@@ -126,6 +135,7 @@ func (h *TaskHandler) GetAll(w http.ResponseWriter, r *http.Request) {
     if offsetStr != "" {
         o, err := strconv.Atoi(offsetStr)
         if err != nil {
+			log.Println("Invalid offset parameter")
             http.Error(w, "Invalid offset parameter", http.StatusBadRequest)
             return
         }
@@ -152,6 +162,7 @@ func (h *TaskHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} map[string]string
 // @Router /api/v1/tasks/{uuid}/delete [delete]
 func (h *TaskHandler) Delete(w http.ResponseWriter, r *http.Request) {
+	log.Println("Handling Delete request")
 	vars := mux.Vars(r)
 	uuid := vars["uuid"]
 

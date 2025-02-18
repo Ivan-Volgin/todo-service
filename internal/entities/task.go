@@ -10,5 +10,5 @@ type Task struct {
 	Description string    `json:"description"`
 	Completed   bool      `json:"completed"`
 	Date        string    `json:"date"`
-	User_ID     uint64    `json:"user_id"`
+	User_ID     uuid.UUID `json:"user_id"`
 }

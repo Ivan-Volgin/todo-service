@@ -25,9 +25,12 @@ import (
 // @host      localhost:8080
 // @BasePath  /
 func main(){
+	log.Println("Programm started")
+
 	if err := godotenv.Load(); err != nil {
         log.Fatal("Error loading .env file")
     }
+	log.Println(".env file successfully loaded")
 
     dbHost := os.Getenv("DB_HOST")
     dbPort := os.Getenv("DB_PORT")
@@ -37,6 +40,7 @@ func main(){
     serverAddr := os.Getenv("SERVER_ADDR")
 
     connStr := "postgres://" + dbUser + ":" + dbPassword + "@" + dbHost + ":" + dbPort + "/" + dbName + "?sslmode=disable"
+	log.Println("DB connection string successfully generated")
 
 	db, err := database.Conect(connStr)
 	if err != nil {
